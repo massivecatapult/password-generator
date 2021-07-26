@@ -131,9 +131,10 @@ draw_set_alpha(1);
 //row 4
 draw_button_pg_icon(15, 321, 64, (hidden_mode ? spr_icon_eye_closed : spr_icon_eye_open), c_blueberry, true, true, true);
 draw_button_pg_icon(89, 321, 64, (scale_double ? spr_icon_compress : spr_icon_expand), c_blueberry, true, true, true);
-draw_button_pg_icon(573, 321, 64, spr_icon_load, c_blueberry, true, true, true);
-draw_button_pg_icon(647, 321, 64, spr_icon_save, c_blueberry, true, true, true);
-draw_button_pg_icon(721, 321, 64, spr_icon_reload, c_blueberry, true, true, true);
+draw_button_pg_icon(499, 321, 64, spr_icon_load, c_blueberry, true, true, true);
+draw_button_pg_icon(573, 321, 64, spr_icon_save, c_blueberry, true, true, true);
+draw_button_pg_icon(647, 321, 64, spr_icon_reload, c_blueberry, true, true, true);
+draw_button_pg_icon(721, 321, 64, spr_icon_info, c_blueberry, true, true, true);
 
 //draw password
 draw_set_color(c_white);
