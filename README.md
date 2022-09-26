@@ -1,4 +1,4 @@
-# password-generator
+# Password Generator
 A simple yet versatile password generator created with GameMaker.
 
 Password Generator is capable of creating random strings suitable for secure password use from 4 to 1024 characters in length, and using a configurable combination of letters, numbers, and special characters.
