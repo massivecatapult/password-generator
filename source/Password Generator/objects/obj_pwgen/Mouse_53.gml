@@ -100,5 +100,5 @@ if (m[0] > 647) && (m[0] < 711) && (m[1] > 321) && (m[1] < 385){
 
 //info
 if (m[0] > 721) && (m[0] < 785) && (m[1] > 321) && (m[1] < 385){
-
+	url_open("https://github.com/massivecatapult/password-generator");
 }
