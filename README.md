@@ -23,7 +23,7 @@ Password Generator was created to generate passwords for you when you don't have
 
 ### Special character options
 
-You can toggled between three different settings for special characters. Password Generator was designed this way because sometimes, older websites don't allow certain characters to be used, so a more limited set is preferred. The special character options work as follows:
+You can toggle between three different settings for special characters. Password Generator was designed this way because sometimes, older websites don't allow certain characters to be used, so a more limited set is preferred. The special character options work as follows:
 
 - Basic: Uses letters, numbers, and !@#$%^&\*()-+_=
 - Full: Uses letters, numbers, and !@#$%^&\*()[]{}:;<>?,.~'+=-\_\"\\/|
