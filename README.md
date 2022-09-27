@@ -1,3 +1,4 @@
+![Password Generator logo](https://github.com/massivecatapult/password-generator/blob/main/assets/images/pg-logo-4.png)
 # Password Generator
 A simple yet versatile password generator created with GameMaker.
 
