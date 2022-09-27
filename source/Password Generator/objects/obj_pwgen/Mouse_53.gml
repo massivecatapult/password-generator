@@ -1,7 +1,9 @@
-/// @desc Button presses and mouse drag
+/// @desc Button and mouse drag checks
+
+//get current mouse position
 var m = [device_mouse_x(0), device_mouse_y(0)];
 
-//password generate button
+//generate password button
 if (m[0] > 15) && (m[0] < 515) && (m[1] > 99) && (m[1] < 163)
 {
 	update_password();
@@ -29,7 +31,7 @@ if (m[0] > 216) && (m[0] < 280) && (m[1] > 173) && (m[1] < 237)
 	update_password();
 }
 
-//set length by entering typing mode
+//set length by entering drag mode
 if (m[0] > 282) && (m[0] < 390) && (m[1] > 173) && (m[1] < 237)
 {
 	drag_mode_length = true;
@@ -39,22 +41,31 @@ if (m[0] > 282) && (m[0] < 390) && (m[1] > 173) && (m[1] < 237)
 //special characters
 if (m[0] > 400) && (m[0] < 675) && (m[1] > 173) && (m[1] < 237)
 {
-	special_chars += 1;
-	if (special_chars > 2)
+	switch(special_chars)
 	{
+		case 0:
+		special_chars = 1;
+		break;
+		
+		case 1:
+		special_chars = 2;
+		break;
+		
+		default:
 		special_chars = 0;
 	}
+
 	update_password();
 }
 
-//set numbers percentage
+//set character breakdowns by dragging boundaries
 if (special_chars == 0)
 {
-	
+	//figure out where the boundary is
 	var letters_area = (letters_percentage_nospecials / 100) * 770;
 	var numbers_area = (numbers_percentage_nospecials / 100) * 770;
 	
-	//single boundary
+	//letters/numbers boundary
 	if (m[0] > 15 + letters_area - 10) && (m[0] < 15 + letters_area + 10) && (m[1] > 247) && (m[1] < 311)
 	{
 		drag_mode_boundary3 = true;
@@ -62,17 +73,17 @@ if (special_chars == 0)
 	
 } else {
 	
+	//figure out where the boundaries are
 	var letters_area = (letters_percentage / 100) * 770;
 	var numbers_area = (numbers_percentage / 100) * 770;
-	//var specials_area = (specials_percentage / 100) * 770;
 
-	//first boundary
+	//letters/numbers boundary
 	if (m[0] > 15 + letters_area - 10) && (m[0] < 15 + letters_area + 10) && (m[1] > 247) && (m[1] < 311)
 	{
 		drag_mode_boundary1 = true;
 	}
 
-	//second boundary
+	//numbers/special characters boundary, which is just the other two added up
 	if (m[0] > 15 + letters_area + numbers_area - 10) && (m[0] < 15 + letters_area + numbers_area + 10) && (m[1] > 247) && (m[1] < 311)
 	{
 		drag_mode_boundary2 = true;
@@ -113,7 +124,7 @@ if (m[0] > 647) && (m[0] < 711) && (m[1] > 321) && (m[1] < 385)
 	update_password();
 }
 
-//info
+//info link
 if (m[0] > 721) && (m[0] < 785) && (m[1] > 321) && (m[1] < 385)
 {
 	url_open("https://github.com/massivecatapult/password-generator");

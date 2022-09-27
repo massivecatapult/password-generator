@@ -1,5 +1,6 @@
 /// @func					draw_button_pg(_x, _y, _width, _label, _color, _active, _round_left, _round_right, _icon)
 /// @desc					Draws a button using the button sprite and with the appropriate colors, returns hover state
+///							Returns the hover state of the button
 /// @arg {real}				_x						The x position of the button's top left corner
 /// @arg {real}				_y						The y position of the button's top left corner
 /// @arg {real}				_width					The width of the button
@@ -12,49 +13,49 @@
 
 function draw_button_pg(_x, _y, _width, _label, _color, _active, _round_left, _round_right, _icon = -1) {
 
-	var c = _color;
-	var md = false;
-	var h = false;
+	var button_color = _color;
+	var mouse_down = false;
+	var mouse_hover = false;
 
+	//if the button is active and the mouse is hovering over it, change the color and set the hover state to true
 	if (_active)
 	{
 		var m = [device_mouse_x(0), device_mouse_y(0)];
 		if (m[0] > _x) && (m[0] < _x + _width) && (m[1] > _y) && (m[1] < _y + 64)
 		{
-			h = true;
-			md = mouse_check_button(mb_left);
-			c = merge_color(c, c_white, 0.2);
+			mouse_hover = true;
+			mouse_down = mouse_check_button(mb_left);
+			button_color = merge_color(button_color, c_white, 0.2);
 		}
 	}
 
+	//reset draw color
 	draw_set_color(c_white);
-	if (_round_left)
-	{
-		draw_sprite_ext(spr_button, 0, _x, _y, 0.5, 0.5, 0, c, 1);
-	} else {
-		draw_sprite_ext(spr_button, 1, _x, _y, 0.5, 0.5, 0, c, 1);
-	}
-
-	var w = (_width - 20);
-	draw_sprite_ext(spr_button, 1, _x + 10, _y, (w / 10) * 0.5, 0.5, 0, c, 1);
-
-	if (_round_right)
-	{
-		draw_sprite_ext(spr_button, 2, _x + 10 + w, _y, 0.5, 0.5, 0, c, 1);
-	} else {
-		draw_sprite_ext(spr_button, 1, _x + 10 + w, _y, 0.5, 0.5, 0, c, 1);
-	}
 	
+	//draw the left side of the button
+	draw_sprite_ext(spr_button, (_round_left) ? 0 : 1, _x, _y, 0.5, 0.5, 0, button_color, 1);
+
+	//draw the middle of the button
+	draw_sprite_ext(spr_button, 1, _x + 10, _y, ((_width - 20) / 10) * 0.5, 0.5, 0, button_color, 1);
+
+	//draw the right side of the button
+	draw_sprite_ext(spr_button, (_round_right) ? 2 : 1, _x + 10 + (_width - 20), _y, 0.5, 0.5, 0, button_color, 1);
+
+	//set the font and text alignment
 	draw_set_font(fnt_button);
 	draw_set_valign(fa_middle);
 
-	var ty = (_active && md) ? 2 : 0;
+	//offset the button if it's active and being clicked
+	var ty = (_active && mouse_down) ? 2 : 0;
 
+	//draw the button without an icon if there is no icon set
 	if (_icon == -1)
 	{
+		//if there is no icon, the text can be centered
 		draw_set_halign(fa_center);
 		draw_text_transformed(_x + (_width / 2), _y + 32 + ty, _label, 0.5, 0.5, 0);
 	} else {
+		//if there is an icon, the text should be left-aligned and centered with the icon taken into account
 		var string_w = string_width(_label) * 0.5;
 		var sprite_w = sprite_get_width(_icon) * 0.5;
 		var spacer = string_length(_label) > 0 ? 10 : 0;
@@ -65,7 +66,8 @@ function draw_button_pg(_x, _y, _width, _label, _color, _active, _round_left, _r
 		draw_sprite_ext(_icon, 0, _x + offset + string_w + spacer + (sprite_w * 0.5), _y + 32 + ty, 0.5, 0.5, 0, c_white, 1);
 	}
 	
-	return h;
+	//return the hover state
+	return mouse_hover;
 }
 
 /// @func					generate_password(_length, _special_characters, _letter_string, _number_string, _special_basic_string, _special_full_string, _number_ratio, _specials_ratio)
@@ -110,7 +112,7 @@ function generate_password(_length, _special_characters, _letter_string, _number
 		ds_list_add(specials_expanded_array, string_char_at(_special_full_string, i));
 	}
 
-	//shuffle lists
+	//shuffle character lists
 	ds_list_shuffle(letters_array);
 	ds_list_shuffle(numbers_array);
 	ds_list_shuffle(specials_array);
@@ -119,7 +121,7 @@ function generate_password(_length, _special_characters, _letter_string, _number
 	//set the number of numbers, special characters, and capital letters in the password
 	var number_of_numbers = 0;
 	var number_of_specials = 0;
-	var number_of_caps = 0; //max(floor(length / 4), 1)
+	var number_of_caps = 0;
 
 	//set a default list for specials
 	var use_list = specials_array;
@@ -127,12 +129,13 @@ function generate_password(_length, _special_characters, _letter_string, _number
 	//alter the above numbers a bit for other special character circumstances
 	switch (use_specials)
 	{
-		case 0:
+		case 1:
 		number_of_numbers = max(floor(length * _number_ratio), 1);
-		number_of_specials = 0;
-		number_of_caps = round((length - number_of_numbers) * 0.5);
+		number_of_specials = max(floor(length * _specials_ratio), 1);
+		number_of_caps = round((length - number_of_numbers - number_of_specials) * 0.5);
+		use_list = specials_array;
 		break;
-	
+		
 		case 2:
 		number_of_numbers = max(floor(length * _number_ratio), 1);
 		number_of_specials = max(floor(length * _specials_ratio), 1);
@@ -142,9 +145,8 @@ function generate_password(_length, _special_characters, _letter_string, _number
 	
 		default:
 		number_of_numbers = max(floor(length * _number_ratio), 1);
-		number_of_specials = max(floor(length * _specials_ratio), 1);
-		number_of_caps = round((length - number_of_numbers - number_of_specials) * 0.5);
-		use_list = specials_array;
+		number_of_specials = 0;
+		number_of_caps = round((length - number_of_numbers) * 0.5);
 	}
 
 	//create a list that contains all the numbers and special characters

@@ -14,6 +14,9 @@ specials_expanded = "!@#$%^&*()[]{}:;<>?,.~'+=-_\"\\/|";
 
 drag_mode_length = false;
 drag_m = [0, 0];
+drag_mode_boundary1 = false;
+drag_mode_boundary2 = false;
+drag_mode_boundary3 = false;
 
 copy_label = "Copy";
 copy_active = true;
@@ -24,17 +27,16 @@ specials_percentage = 25;
 letters_percentage_nospecials = 65;
 numbers_percentage_nospecials = 35;
 
-drag_mode_boundary1 = false;
-drag_mode_boundary2 = false;
-drag_mode_boundary3 = false;
-
-//methods
+/// @func		reset_copy_button()
+/// @desc		Resets the Copy button to an active state, and changes the label back to "Copy"
 reset_copy_button = function()
 {
 	copy_label = "Copy";
 	copy_active = true;
 }
 
+/// @func		copy_password_to_clipboard()
+/// @desc		Copies the current password to the clipboard and changes the state of the Copy button
 copy_password_to_clipboard = function()
 {
 	clipboard_set_text(password);
@@ -43,6 +45,8 @@ copy_password_to_clipboard = function()
 	call_later(120, time_source_units_frames, reset_copy_button, false);
 }
 
+/// @func		reset_settings()
+/// @desc		Resets all settings related to password creation
 reset_settings = function()
 {
 	length = 16;
@@ -54,6 +58,8 @@ reset_settings = function()
 	numbers_percentage_nospecials = 35;
 }
 
+/// @func		save_settings()
+/// @desc		Saves settings related to password creation in settings.ini
 save_settings = function()
 {
 	var file = working_directory + "settings.ini";
@@ -68,6 +74,8 @@ save_settings = function()
 	ini_close();
 }
 
+/// @func		load_settings()
+/// @desc		Loads settings related to password creation from settings.ini
 load_settings = function()
 {
 var file = working_directory + "settings.ini";
@@ -87,6 +95,8 @@ var file = working_directory + "settings.ini";
 	}	
 }
 
+/// @func		save_app_settings()
+/// @desc		Saves general app settings to the settings.ini
 save_app_settings = function()
 {
 	var file = working_directory + "settings.ini";
@@ -96,6 +106,8 @@ save_app_settings = function()
 	ini_close();
 }
 
+/// @func		load_app_settings()
+/// @desc		Loads general app settings to the settings.ini
 load_app_settings = function()
 {
 	var file = working_directory + "settings.ini";
@@ -111,6 +123,8 @@ load_app_settings = function()
 	}
 }
 
+/// @func		resize_window()
+/// @desc		Resizes and centers the app window, toggling between normal and big modes
 resize_window = function()
 {
 	//set an array for window sizes
@@ -137,14 +151,17 @@ resize_window = function()
 		surface_resize(application_surface, 1600, 800);
 	}
 
-	//center the window manually, since the defualt function doesn't want to work
+	//center the window manually, since the default function doesn't want to work
 	var display_width = display_get_width();
 	var display_height = display_get_height();
 	window_set_position(round((display_width - window_size[0]) * 0.5), round((display_height - window_size[1]) * 0.5));
 }
 
+/// @func		update_password()
+/// @desc		Creates parameters and gets a new password from generate_password()
 update_password = function()
 {
+	//get ratios for letter/number/special character balance
 	var numbers_var = numbers_percentage / 100;
 	var specials_var = specials_percentage / 100;
 
@@ -153,14 +170,20 @@ update_password = function()
 		numbers_var = numbers_percentage_nospecials / 100;
 		specials_var = 0;
 	}
-
+	
+	//get a new password
 	password = generate_password(length, special_chars, letters, numbers, specials, specials_expanded, numbers_var, specials_var);
+	
+	//since we have an updated password, reset the Copy button to its default state
 	reset_copy_button();	
 }
 
 //try to load settings on launch
 load_settings();
 load_app_settings();
+
+//force a window resize
 resize_window();
 
+//generate the initial random password
 update_password();
