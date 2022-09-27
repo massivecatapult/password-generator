@@ -1,2 +1,2 @@
-/// @desc 
-event_user(0);
+/// @desc Update password continuously
+update_password();

@@ -1,4 +1,3 @@
-/// @desc 
 //reset cursor state
 window_set_cursor(cr_default);
 
@@ -13,21 +12,22 @@ draw_set_font(fnt_button);
 
 //buttons row 1
 draw_button_pg(15, 99, 500, "Generate New Password", c_emerald, true, true, true, spr_icon_reload);
-//var cc = (copy_active) ? c_mango : c_dkgray;
 draw_button_pg(525, 99, 260, copy_label, c_mango, true, true, true, spr_icon_clipboard);
 
 //buttons row 2
 draw_button_pg(15, 173, 133, "Length", c_seafoam, false, true, false);
 draw_button_pg(150, 173, 64, "-", c_seafoam, true, false, false);
 draw_button_pg(216, 173, 64, "+", c_seafoam, true, false, false);
-if (draw_button_pg(282, 173, 108, string(length), c_black, true, false, true)){
+if (draw_button_pg(282, 173, 108, string(length), c_black, true, false, true))
+{
 	window_set_cursor(cr_size_we);
 }
 
 //buttons row 2
 draw_button_pg(400, 173, 275, "Special Characters", c_seafoam, true, true, false);
 var sc = "";
-switch (special_chars){
+switch (special_chars)
+{
 	case 0:
 	sc = "None";
 	break;
@@ -43,7 +43,8 @@ switch (special_chars){
 //graph background
 draw_button_pg(677, 173, 108, sc, c_black, false, false, true);
 
-if (special_chars == 0){
+if (special_chars == 0)
+{
 	
 	//graph row 3
 	var letters_area = (letters_percentage_nospecials / 100) * 770;
@@ -75,7 +76,8 @@ if (special_chars == 0){
 	draw_set_alpha(.25);
 	
 	//single boundary
-	if ((m[0] > 15 + letters_area - 10) && (m[0] < 15 + letters_area + 10) && (m[1] > 247) && (m[1] < 311)) || (drag_mode_boundary3){
+	if ((m[0] > 15 + letters_area - 10) && (m[0] < 15 + letters_area + 10) && (m[1] > 247) && (m[1] < 311)) || (drag_mode_boundary3)
+	{
 		draw_sprite_ext(spr_button, 1, 15 + letters_area - 2.5, 247, 0.25, 0.5, 0, c_black, 1);
 		window_set_cursor(cr_size_we);
 	}
@@ -115,12 +117,14 @@ if (special_chars == 0){
 	draw_set_alpha(.25);
 
 	//first boundary
-	if ((m[0] > 15 + letters_area - 10) && (m[0] < 15 + letters_area + 10) && (m[1] > 247) && (m[1] < 311) && !drag_mode_boundary2) || (drag_mode_boundary1 && !drag_mode_boundary2){
+	if ((m[0] > 15 + letters_area - 10) && (m[0] < 15 + letters_area + 10) && (m[1] > 247) && (m[1] < 311) && !drag_mode_boundary2) || (drag_mode_boundary1 && !drag_mode_boundary2)
+	{
 		draw_sprite_ext(spr_button, 1, 15 + letters_area - 2.5, 247, 0.25, 0.5, 0, c_black, 1);
 		window_set_cursor(cr_size_we);
 	}
 	//second boundary
-	if ((m[0] > 15 + letters_area + numbers_area - 10) && (m[0] < 15 + letters_area + numbers_area + 10) && (m[1] > 247) && (m[1] < 311) && !drag_mode_boundary1) || (drag_mode_boundary2 && !drag_mode_boundary1){
+	if ((m[0] > 15 + letters_area + numbers_area - 10) && (m[0] < 15 + letters_area + numbers_area + 10) && (m[1] > 247) && (m[1] < 311) && !drag_mode_boundary1) || (drag_mode_boundary2 && !drag_mode_boundary1)
+	{
 		draw_sprite_ext(spr_button, 1, 15 + letters_area + numbers_area - 2.5, 247, 0.25, 0.5, 0, c_black, 1);
 		window_set_cursor(cr_size_we);
 	}
@@ -129,29 +133,34 @@ if (special_chars == 0){
 draw_set_alpha(1);
 
 //row 4
-draw_button_pg_icon(15, 321, 64, (hidden_mode ? spr_icon_eye_closed : spr_icon_eye_open), c_blueberry, true, true, true);
-draw_button_pg_icon(89, 321, 64, (scale_double ? spr_icon_compress : spr_icon_expand), c_blueberry, true, true, true);
-draw_button_pg_icon(499, 321, 64, spr_icon_load, c_blueberry, true, true, true);
-draw_button_pg_icon(573, 321, 64, spr_icon_save, c_blueberry, true, true, true);
-draw_button_pg_icon(647, 321, 64, spr_icon_reload, c_blueberry, true, true, true);
-draw_button_pg_icon(721, 321, 64, spr_icon_info, c_blueberry, true, true, true);
+draw_button_pg(15, 321, 64, "", c_blueberry, true, true, true, (hidden_mode ? spr_icon_eye_closed : spr_icon_eye_open));
+draw_button_pg(89, 321, 64, "", c_blueberry, true, true, true, (scale_double ? spr_icon_compress : spr_icon_expand));
+draw_button_pg(499, 321, 64, "", c_blueberry, true, true, true, spr_icon_load);
+draw_button_pg(573, 321, 64, "", c_blueberry, true, true, true, spr_icon_save);
+draw_button_pg(647, 321, 64, "", c_blueberry, true, true, true, spr_icon_reload);
+draw_button_pg(721, 321, 64, "", c_blueberry, true, true, true, spr_icon_info);
 
 //draw password
 draw_set_color(c_white);
+draw_set_halign(fa_center);
 var password_scale = 0.5;
 
-if (hidden_mode){
-	//if blind mode is on, don't draw the password, just draw asterisks
+//if hidden mode is on, just draw asterisks
+if (hidden_mode)
+{
 	draw_set_font(fnt_asterisk);
-	var blind_password = string_repeat("*", length);
-	if ((string_width(blind_password) * 0.5) > 750){
-		password_scale = 750 / string_width(blind_password);
+	var hidden_password = string_repeat("*", length);
+	if ((string_width(hidden_password) * 0.5) > 750)
+	{
+		password_scale = 750 / string_width(hidden_password);
 	}
-	draw_text_transformed(400, 50, blind_password, password_scale, password_scale, 0);
+	draw_text_transformed(400, 50, hidden_password, password_scale, password_scale, 0);
+	
 } else {
-	//if blind mode is off, draw the password normally
+	
 	draw_set_font(fnt_password);
-	if ((string_width(password) * 0.5) > 750){
+	if ((string_width(password) * 0.5) > 750)
+	{
 		password_scale = 750 / string_width(password);
 	}
 	draw_text_transformed(400, 50, password, password_scale, password_scale, 0);
